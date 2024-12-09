@@ -104,6 +104,22 @@ router.patch('/toogle-availablity',authMiddleware.captainAuth,async(req,res)=>{
   
 })
 
+
+// Ride Accepted Event
+router.get('/new-ride',authMiddleware.captainAuth,(req, res) => {
+   // Set timeout for long polling (e.g., 30 seconds)
+   req.setTimeout(30000, () => {
+    res.status(204).end(); // No Content
+    });
+
+    // Add the response object to the pendingRequests array
+    pendingRequests.push(res);
+});
+
+
+
+
+
 subscribeToQueue("new-ride", (data) => {
   const rideData = JSON.parse(data);
 
@@ -114,19 +130,6 @@ subscribeToQueue("new-ride", (data) => {
 
   // Clear the pending requests
   pendingRequests.length = 0;
-});
-
-// Ride Accepted Event
-router.get('/ride-accepted', (req, res) => {
-    // Long polling: wait for 'ride-accepted' event
-    rideEventEmitter.once('ride-accepted', (data) => {
-        res.status(200).json(data);
-    });
-
-    // Timeout for long polling (30 seconds)
-    setTimeout(() => {
-        res.status(204).send();
-    }, 30000);
 });
 
 module.exports = router;

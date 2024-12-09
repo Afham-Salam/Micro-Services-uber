@@ -99,6 +99,14 @@ router.get('/ride-accepted', (req, res) => {
     setTimeout(() => {
         res.status(204).send();
     }, 30000);
+
+    subscribeToQueue('ride-accepted', async (msg) => {
+      const data = JSON.parse(msg);
+      rideEventEmitter.emit('ride-accepted', data);
+  });
 });
+
+
+
 
 module.exports = router;
