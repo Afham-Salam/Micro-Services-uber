@@ -16,6 +16,7 @@ router.post('/create', authMiddleware.userAuth,async (req, res, next) => {
             pickup,
             destination
         });
+        subscribeToQueue("new-ride",JSON.stringify(newRide))
 
         await newRide.save();
         publishToQueue("new-ride", JSON.stringify(newRide));

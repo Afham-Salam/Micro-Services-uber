@@ -7,7 +7,7 @@ var cors = require('cors');
 var logger = require('morgan');
 
 
-var indexRouter = require('./routes/index');
+var UserRouter = require('./routes/user');
 
 
 
@@ -28,8 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 var rabbit = require('./service/rabbit');
 rabbit.connect()
 
-app.use('/', indexRouter);
-app.use('/api/users', require('./routes/user'));
+app.use('/', UserRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

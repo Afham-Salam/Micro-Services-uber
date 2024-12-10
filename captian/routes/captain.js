@@ -117,9 +117,6 @@ router.get('/new-ride',authMiddleware.captainAuth,(req, res) => {
 });
 
 
-
-
-
 subscribeToQueue("new-ride", (data) => {
   const rideData = JSON.parse(data);
 
